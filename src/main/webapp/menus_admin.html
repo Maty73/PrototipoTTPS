@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendario de Menús - Facultad de Informática: Buffet</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding-top: 70px; /* To ensure content doesn't overlap with navbar */
+        }
+        .navbar {
+            background-color: #2ecc71; /* Emerald Green */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px;
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+        .navbar a {
+            background-color: white;
+            color: #2ecc71;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .navbar a:hover {
+            background-color: #27ae60;
+            color: white;
+        }
+        .calendar-container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 1000px;
+            margin: 40px auto; /* Adjusted to work with navbar */
+        }
+        h1 {
+            text-align: center;
+            color: #2ecc71; /* Emerald Green */
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+        label {
+            color: #333;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 10px;
+        }
+        input[type="text"], button {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #27ae60;
+        }
+        .menu-section {
+            margin-top: 20px;
+        }
+        .menu-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .menu-box {
+            background-color: #ffffff;
+            padding: 20px;
+            width: 48%;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+        }
+        .menu-box h3 {
+            color: #2ecc71;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .menu-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .menu-item input {
+            width: calc(100% - 150px);
+            margin-right: 10px;
+        }
+        .menu-item img {
+            width: 50px;
+            height: 50px;
+            border-radius: 5px;
+            display: none; /* Hidden until an image is uploaded */
+        }
+        .date-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        #menu-section {
+            display: none; /* Hidden until a date is selected */
+        }
+        @media (max-width: 768px) {
+            .menu-container {
+                flex-direction: column;
+            }
+            .menu-box {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+            .navbar {
+                flex-direction: column;
+            }
+        }
+    </style>
+    <script>
+        function mostrarMenu() {
+            document.getElementById("menu-section").style.display = "block";
+        }
+
+        // Function to preview images when uploaded
+        function mostrarImagen(event, previewId) {
+            const preview = document.getElementById(previewId);
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = "block"; // Show the image
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="navbar">
+    <a href="/menus">Menús</a>
+    <a href="/comidas">Comidas</a>
+    <a href="/sugerencias">Sugerencias</a>
+    <a href="/estadisticas">Estadísticas</a>
+    <a href="/usuarios">Usuarios</a>
+</div>
+
+<div class="calendar-container">
+    <h1>Calendario de Menús</h1>
+
+    <div class="date-container">
+        <label for="fecha">Selecciona una fecha:</label>
+        <input type="date" id="fecha" name="fecha" onchange="mostrarMenu();" required>
+    </div>
+
+    <div id="menu-section">
+        <div class="menu-container">
+
+            <!-- Standard Menu -->
+            <div class="menu-box">
+                <h3>Menú Estándar</h3>
+
+                <div class="menu-item">
+                    <label for="entrada">Entrada:</label>
+                    <input type="text" id="entrada" placeholder="Ej. Sopa de vegetales">
+                    <label class="upload-label" for="entradaImg">Subir Imagen</label>
+                    <input type="file" id="entradaImg" accept="image/*" onchange="mostrarImagen(event, 'entradaPreview')">
+                    <img id="entradaPreview" alt="Entrada">
+                </div>
+
+                <div class="menu-item">
+                    <label for="platoPrincipal">Plato Principal:</label>
+                    <input type="text" id="platoPrincipal" placeholder="Ej. Pollo al horno">
+                    <label class="upload-label" for="platoPrincipalImg">Subir Imagen</label>
+                    <input type="file" id="platoPrincipalImg" accept="image/*" onchange="mostrarImagen(event, 'platoPrincipalPreview')">
+                    <img id="platoPrincipalPreview" alt="Plato Principal">
+                </div>
+
+                <div class="menu-item">
+                    <label for="postre">Postre:</label>
+                    <input type="text" id="postre" placeholder="Ej. Flan">
+                    <label class="upload-label" for="postreImg">Subir Imagen</label>
+                    <input type="file" id="postreImg" accept="image/*" onchange="mostrarImagen(event, 'postrePreview')">
+                    <img id="postrePreview" alt="Postre">
+                </div>
+
+                <div class="menu-item">
+                    <label for="bebida">Bebida:</label>
+                    <input type="text" id="bebida" placeholder="Ej. Gaseosa">
+                    <label class="upload-label" for="bebidaImg">Subir Imagen</label>
+                    <input type="file" id="bebidaImg" accept="image/*" onchange="mostrarImagen(event, 'bebidaPreview')">
+                    <img id="bebidaPreview" alt="Bebida">
+                </div>
+            </div>
+
+            <!-- Vegetarian Menu -->
+            <div class="menu-box">
+                <h3>Menú Vegetariano</h3>
+
+                <div class="menu-item">
+                    <label for="entradaVeg">Entrada:</label>
+                    <input type="text" id="entradaVeg" placeholder="Ej. Ensalada">
+                    <label class="upload-label" for="entradaVegImg">Subir Imagen</label>
+                    <input type="file" id="entradaVegImg" accept="image/*" onchange="mostrarImagen(event, 'entradaVegPreview')">
+                    <img id="entradaVegPreview" alt="Entrada Vegetariana">
+                </div>
+
+                <div class="menu-item">
+                    <label for="platoPrincipalVeg">Plato Principal:</label>
+                    <input type="text" id="platoPrincipalVeg" placeholder="Ej. Lasaña de verduras">
+                    <label class="upload-label" for="platoPrincipalVegImg">Subir Imagen</label>
+                    <input type="file" id="platoPrincipalVegImg" accept="image/*" onchange="mostrarImagen(event, 'platoPrincipalVegPreview')">
+                    <img id="platoPrincipalVegPreview" alt="Plato Principal Vegetariano">
+                </div>
+
+                <div class="menu-item">
+                    <label for="postreVeg">Postre:</label>
+                    <input type="text" id="postreVeg" placeholder="Ej. Fruta fresca">
+                    <label class="upload-label" for="postreVegImg">Subir Imagen</label>
+                    <input type="file" id="postreVegImg" accept="image/*" onchange="mostrarImagen(event, 'postreVegPreview')">
+                    <img id="postreVegPreview" alt="Postre Vegetariano">
+                </div>
+
+                <div class="menu-item">
+                    <label for="bebidaVeg">Bebida:</label>
+                    <input type="text" id="bebidaVeg" placeholder="Ej. Agua mineral">
+                    <label class="upload-label" for="bebidaVegImg">Subir Imagen</label>
+                    <input type="file" id="bebidaVegImg" accept="image/*" onchange="mostrarImagen(event, 'bebidaVegPreview')">
+                    <img id="bebidaVegPreview" alt="Bebida Vegetariana">
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
